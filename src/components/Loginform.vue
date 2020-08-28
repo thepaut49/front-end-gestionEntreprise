@@ -1,63 +1,64 @@
 <template>
-    <h1>Login here</h1>
+  <form class="password-form" @submit.prevent="onSubmit">
+    <h1>Connexion</h1>
+    <div class="login">
+      <div>
+        <label for="username">Nom d'utilisateur :</label>
+        <input type="text" name="username" id="username" v-model="username" />
+      </div>
+      <div>
+        <label for="password">Mot de passe :</label>
+        <input type="password" name="password" id="password" v-model="password" />
+      </div>
 
-    <div class="login"> 
-        
-        <div><label for="username">Nom d'utilisateur :</label>
-        <input type="text" name="username" id="username" v-model="username"></div>
-        <div><label for="password">Mot de passe :</label>
-        <input type="password" name="password" id="password" v-model="password"></div>
-        
-        <div class="actions">
-        <input type="submit" name="login" value="Login" @click="signIn()"> <a href="/forgot">I forgot my password</a>
-        </div>
+      <div class="actions">
+        <input class="button" type="submit" value="Se connecter" />
+        <a href="/forgot">Mot de passe oublié</a>
+      </div>
     </div>
-  
+  </form>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-  name: 'Login',
+  name: "Loginform",
   data() {
-      return {
-        username : '',
-        password: '',
-        errorLogin: ''
-      }  
+    return {
+      username: "",
+      password: "",
+    };
   },
-  methods:{
-      signIn() {
-          console.log("username = " + this.username)
-          console.log("password = " + this.password)
-          
-          this.errorLogin = ''
-          axios.get('http://localhost:5000/login', {
-            auth: {
-                username: this.username,
-                password: this.password
-            }
-            }).then(response => {
-                console.log(response)
-                let token = response.data.token
-                this.$store.commit('LOGIN',{},token)
-            })
-            .catch(error => {
-                this.userIsLogged = false
-                this.current_user = {}
-                this.token = ''
-                console.log(error)
-            });
+  methods: {
+    onSubmit() {
+      let error = "";
+      if (this.username === "") {
+        error += "Le nom d'utilisateur doit être renseigné !\n";
       }
+      if (this.password === "") {
+        error += "Le mot de passe doit être renseigné !\n";
+      }
+      if (error != "") {
+        alert(error);
+        return;
+      }
+
+      let user = {
+        username: this.username,
+        password: this.password,
+      };
+      console.log(user);
+      this.$emit("login-submitted", user);
+
+      this.username = "";
+      this.password = "";
+    },
   },
-  computed: {
-  }
-}
+  computed: {},
+};
 </script>
 
 <style>
-#app {
+app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -65,7 +66,6 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
-
 
 * {
   box-sizing: border-box;
@@ -76,22 +76,25 @@ body {
 }
 
 h1,
-.login{
-  width:80%;
+.login {
+  width: 80%;
   margin: 0 auto;
 }
 
 @supports (display: flex) {
   body {
-    padding:0;
+    padding: 0;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
-  
-  h1, .login, .account, .contact {
+
+  h1,
+  .login,
+  .account,
+  .contact {
     margin: 0;
     width: 80%;
   }
@@ -140,8 +143,8 @@ h1 {
 }
 
 .login {
-  background-color: rgba(191, 216, 227, .4);
-  border: 1px solid rgba(191, 216, 227, .8);
+  background-color: rgba(191, 216, 227, 0.4);
+  border: 1px solid rgba(191, 216, 227, 0.8);
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
   padding: 10px;
@@ -153,7 +156,7 @@ h1 {
 }
 
 input[type="submit"] {
-  border: 1px solid rgba(191, 216, 227, .8);
+  border: 1px solid rgba(191, 216, 227, 0.8);
   border-radius: 5px;
   color: #fff;
   background-color: rgb(54, 134, 169);
@@ -162,7 +165,7 @@ input[type="submit"] {
 
 input[type="text"],
 input[type="password"] {
-  border: 1px solid rgba(191, 216, 227, .8);
+  border: 1px solid rgba(191, 216, 227, 0.8);
   padding: 5px;
   border-radius: 5px;
   font-size: 110%;
@@ -172,5 +175,4 @@ input[type="password"] {
 .actions a {
   font-size: 80%;
 }
-
 </style>
