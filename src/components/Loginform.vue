@@ -8,7 +8,12 @@
       </div>
       <div>
         <label for="password">Mot de passe :</label>
-        <input type="password" name="password" id="password" v-model="password" />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          v-model="password"
+        />
       </div>
 
       <div class="actions">
@@ -57,8 +62,11 @@ export default {
 };
 </script>
 
-<style>
-app {
+<style scoped>
+form {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
