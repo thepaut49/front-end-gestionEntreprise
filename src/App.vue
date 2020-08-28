@@ -1,20 +1,29 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-    <Login></Login>
+    <div v-show="$store.userIsLogged">
+      <img alt="Vue logo" src="./assets/logo.png">
+      <HelloWorld msg="Welcome to Your Vue.js App"/>
+    </div>
+    <div v-show="!$store.userIsLogged">
+      <Login></Login>
+    </div>
+    
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import Login from './components/Login.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
     Login
+  },
+  computed:{
+    ...mapState(['userIsLogged','token','current_user'])
   }
 }
 </script>

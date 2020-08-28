@@ -17,6 +17,7 @@
 
 <script>
 import axios from 'axios';
+import { mapState } from 'vuex'
 
 export default {
   name: 'Login',
@@ -39,13 +40,19 @@ export default {
                 password: this.password
             }
             }).then(response => {
-                console.log('authentification success !!!')
                 console.log(response)
+                let token = response.data.token
+                this.$store.commit('LOGIN',{},token)
             })
             .catch(error => {
+                this.userIsLogged = false
+                this.current_user = {}
+                this.token = ''
                 console.log(error)
             });
       }
+  },
+  computed: {
   }
 }
 </script>
