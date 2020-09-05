@@ -2,22 +2,14 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
   </div>
-
-  <Logout v-if="user" :user="user"></Logout>
-  <Loginform v-else @login-submitted="logUser"></Loginform>
 </template>
 
 <script>
-import Loginform from "../components/Loginform.vue";
-import Logout from "../components/Logout.vue";
 import axios from "axios";
 
 export default {
   name: "Home",
-  components: {
-    Loginform,
-    Logout,
-  },
+  components: {},
   data() {
     return {
       user: null,
@@ -48,9 +40,11 @@ export default {
         })
         .catch((error) => {
           this.user = null;
-          this.token = "";
           console.log(error);
         });
+    },
+    logoutUser() {
+      this.user = null;
     },
   },
 };

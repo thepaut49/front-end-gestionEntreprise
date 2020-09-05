@@ -1,5 +1,7 @@
 <template>
-  <div class="logout-container">Utilisateur : {{ user.username }}</div>
+  <form @submit.prevent="onSubmit">
+    <input class="button" type="submit" value="Déconnexion" />
+  </form>
 </template>
 
 <script>
@@ -9,6 +11,11 @@ export default {
     user: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    onSubmit() {
+      this.$emit("logout-submitted");
     },
   },
 };

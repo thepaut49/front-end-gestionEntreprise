@@ -8,17 +8,12 @@
       </div>
       <div>
         <label for="password">Mot de passe :</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          v-model="password"
-        />
+        <input type="password" name="password" id="password" v-model="password" />
       </div>
 
       <div class="actions">
         <input class="button" type="submit" value="Se connecter" />
-        <a href="/forgot">Mot de passe oublié</a>
+        <router-link to="/Wasureta">Mot de passe oublié ?</router-link>
       </div>
     </div>
   </form>
