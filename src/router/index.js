@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Wasureta from "../views/Wasureta.vue";
+import LoginForm from "../views/LoginForm.vue";
 
 const routes = [
   {
@@ -21,6 +22,11 @@ const routes = [
     path: "/Wasureta",
     name: "Wasureta",
     component: Wasureta,
+  },
+  {
+    path: "/LoginForm",
+    name: "LoginForm",
+    component: LoginForm,
   },
 ];
 

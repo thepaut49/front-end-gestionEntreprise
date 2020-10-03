@@ -1,11 +1,17 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
+
+    <div class="Profil" v-if="current_user">
+      <div>
+        <p>Nom d'utilisateur : {{current_user.username}}</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
@@ -15,37 +21,9 @@ export default {
       user: null,
     };
   },
-  computed: {},
-  methods: {
-    logUser(p_user) {
-      console.log(p_user);
-
-      this.errorLogin = "";
-      axios
-        .get("http://localhost:5000/login", {
-          auth: {
-            username: p_user.username,
-            password: p_user.password,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          let token = response.data.token;
-          this.user = {
-            username: p_user.username,
-            password: p_user.password,
-            token: token,
-          };
-          console.log(this.user);
-        })
-        .catch((error) => {
-          this.user = null;
-          console.log(error);
-        });
-    },
-    logoutUser() {
-      this.user = null;
-    },
+  computed: {
+    ...mapState(["current_user"]),
   },
+  methods: {},
 };
 </script>

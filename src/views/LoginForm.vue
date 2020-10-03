@@ -20,8 +20,12 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+import axios from "axios";
+import router from "../router";
+
 export default {
-  name: "Loginform",
+  name: "LoginForm",
   data() {
     return {
       username: "",
@@ -29,6 +33,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["logUser"]),
     onSubmit() {
       let error = "";
       if (this.username === "") {
@@ -45,9 +50,36 @@ export default {
       let user = {
         username: this.username,
         password: this.password,
+        token: null,
       };
       console.log(user);
-      this.$emit("login-submitted", user);
+
+      console.log("méthode onSubmit");
+
+      this.errorLogin = "";
+      axios
+        .get("http://localhost:5000/login", {
+          auth: {
+            username: user.username,
+            password: user.password,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          let token = response.data.token;
+          user = {
+            username: user.username,
+            password: user.password,
+            token: token,
+          };
+        })
+        .catch((error) => {
+          user = null;
+          console.log(error);
+        });
+
+      this.logUser({ user });
+      router.push("/");
 
       this.username = "";
       this.password = "";

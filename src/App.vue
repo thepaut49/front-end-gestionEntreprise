@@ -1,62 +1,34 @@
 <template>
   <div id="app">
-    <div id="nav" v-if="user">
+    <div id="nav">
       <router-link to="/">Home</router-link>
       <router-link to="/about">About</router-link>
-      <Logout :user="user" @logout-submitted="logoutUser"></Logout>
+      <router-link v-if="!current_user" to="/LoginForm">Sign In</router-link>
+      <button v-if="current_user" @click="logout">Déconexion</button>
     </div>
     <router-view />
-
-    <Loginform v-if="!user" @login-submitted="logUser"></Loginform>
   </div>
 </template>
 
 <script>
-import Loginform from "./components/Loginform.vue";
-import Logout from "./components/Logout.vue";
-import axios from "axios";
+//import Logout from "./components/Logout.vue";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "App",
-  components: {
-    Loginform,
-    Logout,
-  },
+  components: {},
   data() {
     return {
       user: null,
     };
   },
-  computed: {},
+  computed: {
+    ...mapState(["current_user"]),
+  },
   methods: {
-    logUser(p_user) {
-      console.log(p_user);
-
-      this.errorLogin = "";
-      axios
-        .get("http://localhost:5000/login", {
-          auth: {
-            username: p_user.username,
-            password: p_user.password,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          let token = response.data.token;
-          this.user = {
-            username: p_user.username,
-            password: p_user.password,
-            token: token,
-          };
-          console.log(this.user);
-        })
-        .catch((error) => {
-          this.user = null;
-          console.log(error);
-        });
-    },
-    logoutUser() {
-      this.user = null;
+    ...mapActions(["logUser", "logoutUser"]),
+    logout() {
+      this.logoutUser();
     },
   },
 };
@@ -76,6 +48,7 @@ export default {
 }
 
 #nav a {
+  padding: 30px;
   font-weight: bold;
   color: #2c3e50;
 }
